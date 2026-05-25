@@ -2,8 +2,7 @@ steps:
   - label: ":test_tube: Rstest JUnit import"
     key: "rstest-junit"
     command:
-      - "corepack enable"
-      - "corepack prepare pnpm@10.33.4 --activate"
+      - "npm install --global pnpm@10.33.4"
       - "pnpm install --frozen-lockfile"
       - "pnpm test:ci"
     artifact_paths:
@@ -11,7 +10,7 @@ steps:
     secrets:
       - RSTEST_TEST_SUITE_TOKEN
     plugins:
-      - test-collector#v1.0.0:
+      - test-collector#v1.11.0:
           files: "reports/junit.xml"
           format: "junit"
           api-token-env-name: "RSTEST_TEST_SUITE_TOKEN"
