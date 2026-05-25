@@ -1,0 +1,14 @@
+steps:
+  - label: ":test_tube: Rstest JUnit import"
+    key: "rstest-junit"
+    command:
+      - "corepack enable"
+      - "corepack prepare pnpm@10.33.4 --activate"
+      - "pnpm install --frozen-lockfile"
+      - "pnpm test:ci"
+    artifact_paths:
+      - "reports/**/*"
+    plugins:
+      - test-collector#v1.0.0:
+          files: "reports/junit.xml"
+          format: "junit"

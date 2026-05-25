@@ -1,0 +1,22 @@
+{
+  "name": "buildkite-rstest-test",
+  "version": "1.0.0",
+  "description": "Rstest + Buildkite Test Engine JUnit XML POC",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "rstest run",
+    "test:ci": "rstest run --passWithNoTests",
+    "test:flaky:fail": "FORCE_FLAKY_FAILURE=true rstest run --passWithNoTests",
+    "upload:junit": "scripts/upload-junit-to-buildkite.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.33.4",
+  "devDependencies": {
+    "@rstest/core": "^0.10.2",
+    "@types/node": "^25.9.1",
+    "typescript": "^6.0.3"
+  }
+}
