@@ -8,6 +8,8 @@ steps:
       - "pnpm test:ci"
     artifact_paths:
       - "reports/**/*"
+    secrets:
+      BUILDKITE_ANALYTICS_TOKEN: RSTEST_TEST_SUITE_TOKEN
     plugins:
       - test-collector#v1.0.0:
           files: "reports/junit.xml"
