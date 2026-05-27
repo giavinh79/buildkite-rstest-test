@@ -1,5 +1,5 @@
 import { defineConfig } from '@rstest/core';
-import { buildkiteReporterIfEnabled } from 'rstest-buildkite-reporter';
+import { buildkiteReporterIfEnabled } from './src/buildkite-reporter';
 
 export default defineConfig({
   include: ['tests/**/*.test.ts'],

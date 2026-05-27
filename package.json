@@ -17,7 +17,6 @@
   "devDependencies": {
     "@rstest/core": "^0.10.2",
     "@types/node": "^25.9.1",
-    "rstest-buildkite-reporter": "github:giavinh79/buildkite-rstest-custom-reporter",
     "typescript": "^6.0.3"
   }
 }

@@ -5,7 +5,7 @@ This repo checks whether Buildkite Test Engine can ingest Rstest results through
 ## What This Proves
 
 - Rstest can run TypeScript tests.
-- Rstest can emit Buildkite JSON at `reports/buildkite-results.json` using [`rstest-buildkite-reporter`](https://github.com/giavinh79/buildkite-rstest-custom-reporter).
+- Rstest can emit Buildkite JSON at `reports/buildkite-results.json` using the local custom reporter in `src/buildkite-reporter.ts`.
 - Rstest still emits JUnit XML at `reports/junit.xml` for side-by-side inspection.
 - Buildkite can import the custom JSON through the `test-collector` plugin.
 - Buildkite can see mixed pass/fail results for the same test on the same commit when the pipeline is rebuilt.
