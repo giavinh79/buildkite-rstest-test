@@ -1,6 +1,6 @@
 steps:
-  - label: ":test_tube: Rstest JUnit import"
-    key: "rstest-junit"
+  - label: ":test_tube: Rstest Buildkite JSON import"
+    key: "rstest-json"
     command:
       - "npm install --global pnpm@10.33.4"
       - "pnpm install --frozen-lockfile"
@@ -11,6 +11,6 @@ steps:
       - RSTEST_TEST_SUITE_TOKEN
     plugins:
       - test-collector#v1.11.0:
-          files: "reports/junit.xml"
-          format: "junit"
+          files: "reports/buildkite-results.json"
+          format: "json"
           api-token-env-name: "RSTEST_TEST_SUITE_TOKEN"

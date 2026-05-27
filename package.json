@@ -1,14 +1,14 @@
 {
   "name": "buildkite-rstest-test",
   "version": "1.0.0",
-  "description": "Rstest + Buildkite Test Engine JUnit XML POC",
+  "description": "Rstest + Buildkite Test Engine custom reporter POC",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "test": "rstest run",
-    "test:ci": "rstest run --passWithNoTests",
-    "test:flaky:fail": "FORCE_FLAKY_FAILURE=true rstest run --passWithNoTests",
-    "upload:junit": "scripts/upload-junit-to-buildkite.sh"
+    "test:ci": "BUILDKITE_TEST_ENGINE_RESULT_PATH=./reports/buildkite-results.json rstest run --passWithNoTests",
+    "test:flaky:fail": "FORCE_FLAKY_FAILURE=true BUILDKITE_TEST_ENGINE_RESULT_PATH=./reports/buildkite-results.json rstest run --passWithNoTests",
+    "test:json": "BUILDKITE_TEST_ENGINE_RESULT_PATH=./reports/buildkite-results.json rstest run --passWithNoTests"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,7 @@
   "devDependencies": {
     "@rstest/core": "^0.10.2",
     "@types/node": "^25.9.1",
+    "rstest-buildkite-reporter": "github:giavinh79/buildkite-rstest-custom-reporter",
     "typescript": "^6.0.3"
   }
 }

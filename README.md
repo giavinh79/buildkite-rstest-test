@@ -1,12 +1,13 @@
 # Buildkite Rstest Test Engine POC
 
-This repo checks whether Buildkite Test Engine can ingest Rstest results through JUnit XML and still support flaky-test workflows.
+This repo checks whether Buildkite Test Engine can ingest Rstest results through a custom Buildkite JSON reporter and still support flaky-test workflows.
 
 ## What This Proves
 
 - Rstest can run TypeScript tests.
-- Rstest can emit JUnit XML at `reports/junit.xml`.
-- Buildkite can import that XML through the `test-collector` plugin.
+- Rstest can emit Buildkite JSON at `reports/buildkite-results.json` using [`rstest-buildkite-reporter`](https://github.com/giavinh79/buildkite-rstest-custom-reporter).
+- Rstest still emits JUnit XML at `reports/junit.xml` for side-by-side inspection.
+- Buildkite can import the custom JSON through the `test-collector` plugin.
 - Buildkite can see mixed pass/fail results for the same test on the same commit when the pipeline is rebuilt.
 
 ## Local Usage
@@ -16,19 +17,19 @@ pnpm install
 pnpm test
 ```
 
-To inspect the JUnit failure shape locally:
+To inspect the failure output shape locally:
 
 ```sh
 pnpm test:flaky:fail
 ```
 
-That command is expected to fail and still write `reports/junit.xml`.
+That command is expected to fail and still write both `reports/junit.xml` and `reports/buildkite-results.json`.
 
 ## Buildkite Setup
 
 1. Create a Buildkite Test Engine test suite.
 2. Create a Test Engine analytics token for that suite.
-3. Add the token to the Buildkite pipeline environment as `BUILDKITE_ANALYTICS_TOKEN`.
+3. Add the token to the Buildkite pipeline as the Buildkite secret `RSTEST_TEST_SUITE_TOKEN`.
 4. Connect this GitHub repo to a Buildkite pipeline.
 5. Use `.buildkite/pipeline.yml` as the pipeline definition.
 
@@ -41,7 +42,7 @@ pnpm test:ci
 Then the Buildkite `test-collector` plugin imports:
 
 ```txt
-reports/junit.xml
+reports/buildkite-results.json
 ```
 
 ## Flaky Test Probe
@@ -54,8 +55,15 @@ There is also a random probe disabled by default. To enable it:
 RANDOM_FLAKE_RATE=0.25 pnpm test:ci
 ```
 
-## Important Limitation
+## Metadata Comparison
 
-This POC intentionally uses JUnit XML because Rstest is not a native `bktec` runner. Buildkite documents that JUnit XML import does not provide detailed span information, so some Test Engine features may be unavailable compared with a native collector or JSON import.
+The custom reporter output should add metadata that JUnit XML does not represent as cleanly:
 
-If JUnit import gives weak flaky/auto-mute behavior, the next POC should be a custom Rstest reporter that uploads Buildkite JSON instead of JUnit XML.
+- `file_name`
+- `location` as `./path/to/test.ts:line`
+- `failure_reason`
+- `failure_expanded` with backtrace
+- execution-level tags
+- JSON `history` with `start_at`, `end_at`, and `duration`
+
+Buildkite documents that JUnit XML import does not provide detailed span information. The custom reporter does not add HTTP/SQL span data either; this POC is focused on test identity, location, failure, tag, and history metadata.
